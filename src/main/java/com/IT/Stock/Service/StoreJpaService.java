@@ -9,8 +9,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.IT.Stock.Model.Inward;
+import com.IT.Stock.Model.StockBalance;
 import com.IT.Stock.Model.Store;
 import com.IT.Stock.Repository.InwardJpaRepository;
+import com.IT.Stock.Repository.StockBalanceJpaRepository;
 import com.IT.Stock.Repository.StoreJpaRepository;
 import com.IT.Stock.Repository.StoreRepository;
 
@@ -23,6 +25,9 @@ public class StoreJpaService implements StoreRepository{
     @Autowired
     private InwardJpaRepository inwardJpaRepository;
 
+    @Autowired
+    private StockBalanceJpaRepository stockBalanceJpaRepository;
+
     @Override
     public ArrayList<Store> getAllStores() {
     try{
@@ -33,10 +38,12 @@ public class StoreJpaService implements StoreRepository{
     }    
     }
 
+    @SuppressWarnings("null")
     @Override
     public Store addStore(Store store) {
         Store savedStoreItem = new Store();
         Inward newInward = new Inward();
+        StockBalance newBalance = new StockBalance();
             if(store.getSource() == "CENTRAL_OFFICE"){
             newInward.setCampusName(store.getSource());
             newInward.setCityName(store.getCityName());
@@ -49,6 +56,24 @@ public class StoreJpaService implements StoreRepository{
             }
 
         try{
+
+            StockBalance stockBalance = stockBalanceJpaRepository.findStockBalanceByItem(store.getItem());
+
+            if(stockBalance == null){
+                System.out.println("No stock with this item id");
+                newBalance.setItem(store.getItem());
+                newBalance.setQuantity(store.getQuantity());            
+                stockBalanceJpaRepository.save(newBalance);
+            }
+            else{
+                System.out.println("Stock exists with this itemid");
+                long totalBalance = store.getQuantity() + stockBalance.getQuantity();
+                System.out.println(store.getQuantity());
+                System.out.println(stockBalance.getQuantity());
+                System.out.println(store.getQuantity() + stockBalance.getQuantity());
+                stockBalance.setQuantity(totalBalance);
+                stockBalanceJpaRepository.save(stockBalance);
+            }
            
             Store existingStoreItem = storeJpaRepository.findStoreBySerialNumber(store.getSerialNumber());
            
@@ -66,8 +91,12 @@ public class StoreJpaService implements StoreRepository{
         
         }
             else{     
+                if(store.getItem().getItemType() == "EXPENSE"){
+                    storeJpaRepository.save(store);
+                }
                 System.out.println(existingStoreItem.getCurrentStatus());
-                if(existingStoreItem.getCurrentStatus().equals("IN")){
+                System.out.println(store.getSerialNumber());
+                if(existingStoreItem.getCurrentStatus().equals("IN") & !store.getSerialNumber().equals("") & store.getItem().getItemType().equals("ASSET")){
                     System.out.println("duplicate entry");
                     throw new ResponseStatusException(HttpStatus.FOUND, "This stock is already in Store");
                 }

@@ -1,5 +1,8 @@
 package com.IT.Stock.Model;
 
+import java.sql.Date;
+import java.time.LocalDateTime;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -34,20 +37,31 @@ public class Store {
     private String invoiceDate;
     @Column(name = "serialnumber", unique = true)
     private String serialNumber;
+    @Column(name = "quantity")
+    private int quantity;
     @Column(name = "warrantyrange")
     private String warrantyRange;
     @Column(name = "warrantytype")
     private String warrantyType;
     @Column(name = "currentstatus")
     private String currentStatus;
-        
+    @Column(name = "createdon", nullable = false, updatable = false)
+    private LocalDateTime createdOn;
+
+    @PrePersist
+    protected void onCreate() {
+        createdOn = LocalDateTime.now();
+    }
+
+
     public Store() {
     }
 
     
     public Store(long storeId, Item item, String source, String campusName, String cityName, String department,
-            String vendorName, String vendorAddress, String vendorContact, String poName, String invoiceNumber,
-            String invoiceDate, String serialNumber, String warrantyRange, String warrantyType, String currentStatus) {
+            String vendorName, String vendorAddress, String vendorContact, String poNumber, String invoiceNumber,
+            String invoiceDate, String serialNumber, int quantity, String warrantyRange, String warrantyType,
+            String currentStatus, Date createdOn) {
         this.storeId = storeId;
         this.item = item;
         this.source = source;
@@ -57,10 +71,11 @@ public class Store {
         this.vendorName = vendorName;
         this.vendorAddress = vendorAddress;
         this.vendorContact = vendorContact;
-        this.poNumber = poName;
+        this.poNumber = poNumber;
         this.invoiceNumber = invoiceNumber;
         this.invoiceDate = invoiceDate;
         this.serialNumber = serialNumber;
+        this.quantity = quantity;
         this.warrantyRange = warrantyRange;
         this.warrantyType = warrantyType;
         this.currentStatus = currentStatus;
@@ -124,8 +139,8 @@ public class Store {
     public String getPoNumber() {
         return poNumber;
     }
-    public void setPoNumber(String poName) {
-        this.poNumber = poName;
+    public void setPoNumber(String poNumber) {
+        this.poNumber = poNumber;
     }
     public String getInvoiceNumber() {
         return invoiceNumber;
@@ -145,6 +160,12 @@ public class Store {
     public void setSerialNumber(String serialNumber) {
         this.serialNumber = serialNumber;
     }
+    public int getQuantity() {
+        return quantity;
+    }
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
     public String getWarrantyRange() {
         return warrantyRange;
     }
@@ -163,4 +184,8 @@ public class Store {
     public void setCurrentStatus(String currentStatus) {
         this.currentStatus = currentStatus;
     }
+    public LocalDateTime getCreatedOn() {
+        return createdOn;
+    }
+    
 }
