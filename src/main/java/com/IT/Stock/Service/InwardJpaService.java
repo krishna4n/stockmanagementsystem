@@ -59,5 +59,17 @@ public class InwardJpaService implements InwardRepository{
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'deleteInward'");
     }
+
+
+    @Override
+    public ArrayList<Inward> getLastTenInwards() {
+        try{
+           return (ArrayList<Inward>) inwardJpaRepository.findTop10Inward();
+        }
+        catch(Exception e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        
+    }
     
 }

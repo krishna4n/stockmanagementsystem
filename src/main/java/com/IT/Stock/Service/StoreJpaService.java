@@ -38,9 +38,8 @@ public class StoreJpaService implements StoreRepository{
     }    
     }
 
-    @SuppressWarnings("null")
     @Override
-    public Store addStore(Store store) {
+    public ArrayList<Inward> addStoreAndInwardAndBalance(Store store) {
         Store savedStoreItem = new Store();
         Inward newInward = new Inward();
         StockBalance newBalance = new StockBalance();
@@ -86,8 +85,6 @@ public class StoreJpaService implements StoreRepository{
             newInward.setItem(store.getItem());
             newInward.setStore(savedStoreItem);
             inwardJpaRepository.save(newInward);            
-
-            return savedStoreItem;
         
         }
             else{     
@@ -104,8 +101,10 @@ public class StoreJpaService implements StoreRepository{
                 newInward.setItem(store.getItem());
                 newInward.setStore(existingStoreItem);
                 inwardJpaRepository.save(newInward);
-                return existingStoreItem;
+               
             }
+
+          return (ArrayList<Inward>) inwardJpaRepository.findTop10Inward();
 
         }
         catch(NoSuchElementException e){
@@ -129,6 +128,12 @@ public class StoreJpaService implements StoreRepository{
     public Store deleteStore(long storeId) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'deleteStore'");
+    }
+
+    @Override
+    public Store addStore(Store store) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'addStore'");
     }
     
 }

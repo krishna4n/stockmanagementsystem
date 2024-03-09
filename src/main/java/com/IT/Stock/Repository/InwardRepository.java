@@ -6,6 +6,7 @@ import com.IT.Stock.Model.Inward;
 
 public interface InwardRepository {
     ArrayList<Inward> getAllInwards();
+    ArrayList<Inward> getLastTenInwards();
     Inward addInward(Inward inward);
     Inward getInwardById(long inwardId);
     Inward updateInward(Inward inward, long inwardId);

@@ -16,12 +16,12 @@ public class StockBalanceController {
     @Autowired
     private StockBalanceService stockBalanceService;
 
-    @GetMapping("/stock/balance")
+    @GetMapping("api/stock/balance")
     public ArrayList<StockBalance> getAllStockBalances(){
         return stockBalanceService.getAllStocks();
     }
 
-    @PostMapping("/stock/balance")
+    @PostMapping("api/stock/balance")
     public StockBalance addStockBalance(@RequestBody StockBalance stockBalance){
         return stockBalanceService.addStockBalance(stockBalance);
     }

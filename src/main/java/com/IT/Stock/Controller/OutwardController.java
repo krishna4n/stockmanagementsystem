@@ -16,12 +16,12 @@ public class OutwardController {
     @Autowired
     private OutwardJpaService outwardJpaService;
 
-    @GetMapping("/stores/outward")
+    @GetMapping("api/stores/outward")
     public ArrayList<Outward> getAllOutwards(){
         return outwardJpaService.getAllOutwards();
     }
 
-    @PostMapping("/stores/outward")
+    @PostMapping("api/stores/outward")
     public Outward addOutward(@RequestBody Outward outward){
         return outwardJpaService.addOutward(outward);
     }

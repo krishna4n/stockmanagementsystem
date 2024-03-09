@@ -8,22 +8,24 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.IT.Stock.Model.Inward;
 import com.IT.Stock.Model.Store;
 import com.IT.Stock.Service.StoreJpaService;
+
 
 @RestController
 public class StoreController {
     @Autowired
     private StoreJpaService storeJpaService;
 
-    @GetMapping("/stores")
+    @GetMapping("api/stores")
     public ArrayList<Store> getAllArrayList(){
         return storeJpaService.getAllStores();
     }
 
-    @PostMapping("/stores")
-    public Store addStore(@RequestBody Store store){
+    @PostMapping("api/stores")
+    public ArrayList<Inward> addStoreAndInwardAndBalance(@RequestBody Store store){
         System.out.println("store save called");
-        return storeJpaService.addStore(store);
+        return storeJpaService.addStoreAndInwardAndBalance(store);
     }
 }
