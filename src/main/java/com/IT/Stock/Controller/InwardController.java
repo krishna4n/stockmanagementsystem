@@ -16,18 +16,18 @@ public class InwardController {
     @Autowired
     private InwardJpaService inwardJpaService;
 
-    @GetMapping("api/stores/inward")
+    @GetMapping("stores/inward")
     public ArrayList<Inward> getAllInwards(){
 
         return inwardJpaService.getAllInwards();
     }
 
-    @GetMapping("api/stores/last-ten-inwards")
+    @GetMapping("stores/last-ten-inwards")
     public ArrayList<Inward> getLastTenInwards(){
         return inwardJpaService.getLastTenInwards();
     }
 
-    @PostMapping("api/stores/inward")
+    @PostMapping("stores/inward")
     public Inward addInward(@RequestBody Inward inward){
         return inwardJpaService.addInward(inward);
     }

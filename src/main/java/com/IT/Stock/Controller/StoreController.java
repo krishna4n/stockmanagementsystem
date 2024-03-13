@@ -18,12 +18,12 @@ public class StoreController {
     @Autowired
     private StoreJpaService storeJpaService;
 
-    @GetMapping("api/stores")
+    @GetMapping("stores")
     public ArrayList<Store> getAllArrayList(){
         return storeJpaService.getAllStores();
     }
 
-    @PostMapping("api/stores")
+    @PostMapping("stores")
     public ArrayList<Inward> addStoreAndInwardAndBalance(@RequestBody Store store){
         System.out.println("store save called");
         return storeJpaService.addStoreAndInwardAndBalance(store);

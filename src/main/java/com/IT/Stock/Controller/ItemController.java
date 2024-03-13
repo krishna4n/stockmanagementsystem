@@ -3,7 +3,6 @@ package com.IT.Stock.Controller;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,27 +20,27 @@ public class ItemController {
     @Autowired
     private ItemJpaService itemJpaService;
 
-    @GetMapping("api/items")
+    @GetMapping("items")
     public ArrayList<Item> getAllItems(){
        return itemJpaService.getAllItems();
     }
 
-    @PostMapping("api/items")
+    @PostMapping("items")
     public Item addItem(@RequestBody Item item){
         return itemJpaService.addItem(item);
     }
 
-    @GetMapping("api/items/{itemId}")
+    @GetMapping("items/{itemId}")
     public Item getItemById(@PathVariable("itemId") long itemId){
         return itemJpaService.getItemById(itemId);
     }
 
-    @PutMapping("api/items/{itemId}")
+    @PutMapping("items/{itemId}")
     public Item updateItem(@RequestBody Item item, @PathVariable("itemId") long itemId){
         return itemJpaService.updateItem(item, itemId);
     }
 
-    @DeleteMapping("api/items/{itemId}")
+    @DeleteMapping("items/{itemId}")
     public void deleteItem(@PathVariable("itemId") long itemId){
         itemJpaService.deleteItem(itemId);
     }

@@ -45,6 +45,8 @@ public class Store {
     private String warrantyType;
     @Column(name = "currentstatus")
     private String currentStatus;
+    @Column(name = "workingstatus")
+    private String workingStatus;    
     @Column(name = "createdon", nullable = false, updatable = false)
     private LocalDateTime createdOn;
 
@@ -61,7 +63,7 @@ public class Store {
     public Store(long storeId, Item item, String source, String campusName, String cityName, String department,
             String vendorName, String vendorAddress, String vendorContact, String poNumber, String invoiceNumber,
             String invoiceDate, String serialNumber, int quantity, String warrantyRange, String warrantyType,
-            String currentStatus, Date createdOn) {
+            String currentStatus, Date createdOn, String workingStatus) {
         this.storeId = storeId;
         this.item = item;
         this.source = source;
@@ -79,6 +81,7 @@ public class Store {
         this.warrantyRange = warrantyRange;
         this.warrantyType = warrantyType;
         this.currentStatus = currentStatus;
+        this.workingStatus = workingStatus;
     }
 
 
@@ -187,5 +190,10 @@ public class Store {
     public LocalDateTime getCreatedOn() {
         return createdOn;
     }
-    
+    public void setWorkingStatus(String workingStatus){
+        this.workingStatus = workingStatus;
+    }
+    public String getWrorkingStatus(){
+        return workingStatus;
+    }
 }
