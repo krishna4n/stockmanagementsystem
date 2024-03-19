@@ -1,9 +1,7 @@
 package com.IT.Stock.Model;
 
-import java.sql.Date;
 import java.time.LocalDateTime;
 
-import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -13,6 +11,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
+import java.util.Date;
 
 @Entity
 @Table(name = "inward")
@@ -24,12 +23,16 @@ public class Inward {
     @ManyToOne
     @JoinColumn(name = "storeid")
     private Store store;
+    @Column(name = "inwarddate")
+    private Date inwardDate;
     @Column(name = "cityname")
     private String cityName;
     @Column(name = "campusname")
     private String campusName;
     @Column(name = "department")
     private String department;
+    @Column(name = "quantity")
+    private long quantity;
     @ManyToOne
     @JoinColumn(name = "itemid")
     private Item item;    
@@ -46,13 +49,36 @@ private LocalDateTime createdOn;
     }
 
     
-    public Inward(long inwardId, Store store, String cityName, String campusName, String department, Item item) {
+    public Inward(long inwardId, Store store, String cityName, String campusName, String department, Item item,Date inwardDate, int quantity) {
         this.inwardId = inwardId;
         this.store = store;
         this.cityName = cityName;
         this.campusName = campusName;
         this.department = department;
         this.item = item;
+        this.inwardDate = inwardDate;
+        this.quantity = quantity;
+    }
+
+    
+
+    public long getQuantity() {
+        return quantity;
+    }
+
+
+    public void setQuantity(long quantity) {
+        this.quantity = quantity;
+    }
+
+
+    public Date getInwardDate() {
+        return inwardDate;
+    }
+
+
+    public void setInwardDate(Date inwardDate) {
+        this.inwardDate = inwardDate;
     }
 
 

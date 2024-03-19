@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.IT.Stock.Model.Inward;
+import com.IT.Stock.Model.Store;
 import com.IT.Stock.Service.InwardJpaService;
 
 @RestController
@@ -28,7 +29,7 @@ public class InwardController {
     }
 
     @PostMapping("stores/inward")
-    public Inward addInward(@RequestBody Inward inward){
-        return inwardJpaService.addInward(inward);
+    public ArrayList<Inward> addInwardStoreAndBalance(@RequestBody Store store){
+        return (ArrayList<Inward>) inwardJpaService.addInwardStoreAndBalance(store);
     }
 }

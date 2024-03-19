@@ -1,5 +1,7 @@
 package com.IT.Stock.Model;
 
+import java.util.Date;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -24,19 +26,20 @@ public class Outward {
     private String toDepartment;
     @Column(name = "approvedBy")
     private String approvedBy;
-    @Column(name = "indentNo")
-    private String indenNo;
-    @Column(name = "grnNumber")
-    private String grnNo;
-    @Column(name = "new_replacement")
+    @Column(name = "indent")
+    private String indent;
+    @Column(name = "grn")
+    private String grn;
+    @Column(name = "newreplacement")
     private String newReplacement;
-    @Column(name = "defectSerialNumber")
-    private String defectSerialNumber;
+    @Column(name = "faultyitemserialnumber")
+    private String faultySerialNumber;
     @Column(name = "outpass")
     private String outPass;
-    @ManyToOne
-    @JoinColumn(name = "itemId")
-    private Item item;
+    @Column(name = "quantity")
+    private long quantity;
+    @Column(name = "outwarddate")
+    private Date outwardDate;
     @ManyToOne
     @JoinColumn(name = "storeid")    
     private Store store;
@@ -45,21 +48,24 @@ public class Outward {
     }
     
     public Outward(long outwardId, String toCampus, String toCity, String toDepartment, String approvedBy,
-            String indenNo, String grnNo, String newReplacement, String defectSerialNumber, String outPass, Item item,
-            Store store) {
+            String indent,Date outwardDate, String grn, String newReplacement,long quantity, String defectSerialNumber, String outPass, Store store)
+            {
         this.outwardId = outwardId;
         this.toCampus = toCampus;
         this.toCity = toCity;
         this.toDepartment = toDepartment;
         this.approvedBy = approvedBy;
-        this.indenNo = indenNo;
-        this.grnNo = grnNo;
+        this.indent = indent;
+        this.grn = grn;
         this.newReplacement = newReplacement;
-        this.defectSerialNumber = defectSerialNumber;
+        this.faultySerialNumber = defectSerialNumber;
         this.outPass = outPass;
-        this.item = item;
         this.store = store;
+        this.quantity = quantity;
+        this.outwardDate = outwardDate;
     }
+
+    
 
     public long getOutwardId() {
         return outwardId;
@@ -91,17 +97,17 @@ public class Outward {
     public void setApprovedBy(String approvedBy) {
         this.approvedBy = approvedBy;
     }
-    public String getIndenNo() {
-        return indenNo;
+    public String getIndent() {
+        return indent;
     }
-    public void setIndenNo(String indenNo) {
-        this.indenNo = indenNo;
+    public void setIndent(String indent) {
+        this.indent = indent;
     }
-    public String getGrnNo() {
-        return grnNo;
+    public String getGrn() {
+        return grn;
     }
-    public void setGrnNo(String grnNo) {
-        this.grnNo = grnNo;
+    public void setGrn(String grn) {
+        this.grn = grn;
     }
     public String getNewReplacement() {
         return newReplacement;
@@ -109,11 +115,11 @@ public class Outward {
     public void setNewReplacement(String newReplacement) {
         this.newReplacement = newReplacement;
     }
-    public String getDefectSerialNumber() {
-        return defectSerialNumber;
+    public String getFaultySerialNumber() {
+        return faultySerialNumber;
     }
-    public void setDefectSerialNumber(String defectSerialNumber) {
-        this.defectSerialNumber = defectSerialNumber;
+    public void setFaultySerialNumber(String defectSerialNumber) {
+        this.faultySerialNumber = defectSerialNumber;
     }
     public String getOutPass() {
         return outPass;
@@ -121,17 +127,28 @@ public class Outward {
     public void setOutPass(String outPass) {
         this.outPass = outPass;
     }
-    public Item getItem() {
-        return item;
-    }
-    public void setItem(Item item) {
-        this.item = item;
-    }
+   
     public Store getStore() {
         return store;
     }
     public void setStore(Store store) {
         this.store = store;
+    }
+
+    public long getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(long quantity) {
+        this.quantity = quantity;
+    }
+
+    public Date getOutwardDate() {
+        return outwardDate;
+    }
+
+    public void setOutwardDate(Date outwardDate) {
+        this.outwardDate = outwardDate;
     }
  
 }

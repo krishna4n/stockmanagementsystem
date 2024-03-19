@@ -9,6 +9,5 @@ public interface ItemRepository {
     Item addItem(Item item);
     Item getItemById(Long itemId);
     Item updateItem(Item item,Long itemId);
-    void deleteItem(Long itemId);
-    
+    void deleteItem(Long itemId);    
 }

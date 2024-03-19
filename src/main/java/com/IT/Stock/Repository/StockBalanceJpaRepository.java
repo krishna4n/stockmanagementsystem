@@ -8,5 +8,6 @@ import com.IT.Stock.Model.StockBalance;
 
 @Repository
 public interface StockBalanceJpaRepository extends JpaRepository<StockBalance, Long> {
-    StockBalance findStockBalanceByItem(Item item);
+    StockBalance findByItemAndWorkingStatus(Item item,String workingStatus);
+    
 }

@@ -22,8 +22,8 @@ public class OutwardController {
     }
 
     @PostMapping("stores/outward")
-    public Outward addOutward(@RequestBody Outward outward){
-        return outwardJpaService.addOutward(outward);
+    public ArrayList<Outward> addStockOutwardAndBalance(@RequestBody Outward outward){
+        return outwardJpaService.addStockOutwardAndBalance(outward);
     }
     
 }

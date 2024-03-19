@@ -4,11 +4,8 @@ import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.IT.Stock.Model.Inward;
 import com.IT.Stock.Model.Store;
 import com.IT.Stock.Service.StoreJpaService;
 
@@ -23,9 +20,19 @@ public class StoreController {
         return storeJpaService.getAllStores();
     }
 
-    @PostMapping("stores")
-    public ArrayList<Inward> addStoreAndInwardAndBalance(@RequestBody Store store){
-        System.out.println("store save called");
-        return storeJpaService.addStoreAndInwardAndBalance(store);
+    @GetMapping("/stores/warranty")
+    public ArrayList<Store> getWarrantyDetails(){
+        return storeJpaService.getWarrantyDetails();
     }
+
+    @GetMapping("/stores/currentWorkingItems")
+    public ArrayList<Store> getStoresWorkingDetails(){
+        return storeJpaService.getStoresByCurrentStatusAndWorkingStatus("IN","WORKING");
+    }
+
+    @GetMapping("/stores/currentNotworkingItems")
+    public ArrayList<Store> getStoreNotWorkingDetails(){
+        return storeJpaService.getStoresByCurrentStatusAndWorkingStatus("IN", "NOT_WORKING");
+    }
+
 }

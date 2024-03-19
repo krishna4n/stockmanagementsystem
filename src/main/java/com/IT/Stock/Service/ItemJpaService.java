@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-
 import com.IT.Stock.Model.Item;
 import com.IT.Stock.Repository.ItemJpaRepository;
 import com.IT.Stock.Repository.ItemRepository;
@@ -85,4 +84,6 @@ public class ItemJpaService implements ItemRepository {
         }
         throw new ResponseStatusException(HttpStatus.NO_CONTENT);
     }
+
+ 
 }

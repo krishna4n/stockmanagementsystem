@@ -2,16 +2,20 @@ package com.IT.Stock.Repository;
 
 import java.util.ArrayList;
 
-import com.IT.Stock.Model.Inward;
+
+import com.IT.Stock.Model.Outward;
 import com.IT.Stock.Model.Store;
 
 public interface StoreRepository {
 
     ArrayList<Store> getAllStores();
     Store addStore(Store store);
-    Store getStoreById(long storeId);
-    Store updaStore(Store store,long storeId);
+    Store getStoreBySerialNumber(String serialNumber);
+    Store updateStoreItemStatus(Store store,Store existingStoreItem);
     Store deleteStore(long storeId);
-    ArrayList<Inward> addStoreAndInwardAndBalance(Store store);
+    ArrayList<Store> getWarrantyDetails();
+    Store updateStoreItemOutward(Outward outward,long storeId);
+    Store updateStoreItemReplacement(String faultySerialNumber);
+    ArrayList<Store> getStoresByCurrentStatusAndWorkingStatus(String currentStatus, String workingStatus);
     
 }

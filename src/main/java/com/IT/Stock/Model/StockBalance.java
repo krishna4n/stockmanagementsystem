@@ -22,13 +22,15 @@ public class StockBalance {
     @ManyToOne
     @JoinColumn(name = "itemid")
     private Item item;
-    @Column(name = "qunatity")
+    @Column(name = "workingstatus")
+    private String workingStatus;
+    @Column(name = "quantity")
     private long quantity;
     @Column(name = "updatedOn", nullable = false)
     private LocalDateTime updatedOn;
 
  
-  @PrePersist
+@PrePersist
     protected void updatedOn() {
         updatedOn = LocalDateTime.now();
     }
@@ -38,13 +40,22 @@ public class StockBalance {
 
     
 
-    public StockBalance(long stockId, Item item, long quantity) {
+
+    public StockBalance(long stockId, Item item, long quantity, String workingStatus) {
         this.stockId = stockId;
         this.item = item;
         this.quantity = quantity;
+        this.workingStatus = workingStatus;
     }
 
-
+    public void setWorkingStatus(String workingStatus) {
+        this.workingStatus = workingStatus;
+    }
+    
+    
+        public String getWorkingStatus() {
+        return workingStatus;
+    }
 
     public long getStockId() {
         return stockId;

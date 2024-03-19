@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.IT.Stock.Model.Inward;
 import com.IT.Stock.Model.StockBalance;
 import com.IT.Stock.Repository.StockBalanceJpaRepository;
 import com.IT.Stock.Repository.StockBalanceRepository;
@@ -54,6 +55,18 @@ public class StockBalanceService implements StockBalanceRepository{
     public void deleteStockBalance(long stockBalanceId) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'deleteStockBalance'");
+    }
+
+
+    public void updateQuantity(Inward inward, StockBalance existingStockBalance) {
+       try{
+        long quantity = inward.getQuantity() + existingStockBalance.getQuantity();
+            existingStockBalance.setQuantity(quantity);
+            stockBalanceJpaRepository.save(existingStockBalance);
+       }
+       catch(Exception e){
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+       }
     }
     
 }
