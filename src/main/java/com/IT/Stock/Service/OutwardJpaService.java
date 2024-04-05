@@ -1,6 +1,7 @@
 package com.IT.Stock.Service;
 
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -44,43 +45,51 @@ public class OutwardJpaService implements OutwardRepository{
     public ArrayList<Outward> addStockOutwardAndBalance(Outward outward) {
        
     try{
-
+        if(outward.getNewReplacement().equals("REPLACEMENT")){
+        Store updatedDefectStock = storeJpaService.updateStoreItemDefectStatus(outward);
+        if(updatedDefectStock == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        }
+       
+        long outwardQty = outward.getQuantity();
         Store existingStoreItem = outward.getStore();
         Store isStoreUpdated = storeJpaService.updateStoreItemOutward(outward,existingStoreItem.getStoreId());
        
         if(isStoreUpdated != null){
+            outward.setQuantity(outwardQty);
            Outward newOutward =  outwardJpaRepository.save(outward);
            if(newOutward != null){
             StockBalance existingStockBalance = stockBalancerRepository.findByItemAndWorkingStatus(outward.getStore().getItem(), outward.getStore().getWorkingStatus());
             if(existingStockBalance != null){
                 long outwardQuantity = outward.getStore().getItem().getItemType().equals("ASSET") ? 1 : outward.getQuantity();
-                long quantity = existingStockBalance.getQuantity() - outwardQuantity;
+                long quantity = outward.getStore().getItem().getItemType().equals("EXPENSE") ? (existingStockBalance.getQuantity() - outwardQuantity) : existingStockBalance.getQuantity();
                 System.out.println(existingStockBalance.getQuantity());
                 System.out.println(outward.getQuantity());
                 existingStockBalance.setQuantity(quantity);
                 isStoreUpdated.setQuantity(quantity);
                 storeJpaService.addStore(isStoreUpdated);
                 stockBalanceService.addStockBalance(existingStockBalance);
-                outwardJpaRepository.save(outward);
+               
                 if(outward.getNewReplacement().equals("REPLACEMENT")){
-                    System.out.println("Replacement process initialized");
-                    Store updatedDefectSerialNumber = storeJpaService.updateStoreItemReplacement(outward.getFaultySerialNumber());
-                    if(updatedDefectSerialNumber != null){
-                        DefectItemService defectItemService = new DefectItemService();
+                      
+                         DefectItemService defectItemService = new DefectItemService();
                         Store defectiveStock = storeJpaService.getStoreBySerialNumber(outward.getFaultySerialNumber());
-                        defectItemService.setQuantity(outward.getQuantity()); 
+                        defectItemService.setQuantity(outwardQuantity); 
                         defectItemService.setReceivedFrom(outward.getToCampus());
                         defectItemService.setWorkingStatus("NOT_WORKING");
                         defectItemService.setStore(defectiveStock);
                         defectItemJpaService.addItemService(defectItemService);
-                    }
+                        
+                    
                 }
+               
             }
             }
         }
         return (ArrayList<Outward>)outwardJpaRepository.findTop10Outward();
     }
-    catch(Exception e){
+    catch(NoSuchElementException e){
         throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }    
     }

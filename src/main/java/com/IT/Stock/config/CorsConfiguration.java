@@ -16,7 +16,7 @@ public class CorsConfiguration implements WebMvcConfigurer {
                 .allowedOrigins("http://192.168.99.99:3004")// Allow requests from this origin
                 .allowedMethods("GET", "POST", "PUT", "DELETE") // Allow these HTTP methods
                 .allowedHeaders("*") // Allow all headers
-                .allowCredentials(false)
+                .allowCredentials(true)
                 .maxAge(3600);
     }
 }

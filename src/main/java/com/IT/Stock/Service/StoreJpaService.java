@@ -1,6 +1,7 @@
 package com.IT.Stock.Service;
 
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -94,12 +95,7 @@ public class StoreJpaService implements StoreRepository{
         }
     }
 
- 
-    @Override
-    public Store updateStoreItemReplacement(String faultySerialNumber) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updateStoreItemReplacement'");
-    }
+
 
     @Override
     public ArrayList<Store> getStoresByCurrentStatusAndWorkingStatus(String currentStatus, String workingStatus) {
@@ -109,6 +105,22 @@ public class StoreJpaService implements StoreRepository{
         catch(Exception e){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
+    }
+    @Override
+    public Store updateStoreItemDefectStatus(Outward outward) {
+    try{
+        Store existingStoreItem = storeJpaRepository.findStoreBySerialNumber(outward.getFaultySerialNumber());
+        if(existingStoreItem != null){
+            existingStoreItem.setCurrentStatus("SERVICE");
+            return storeJpaRepository.save(existingStoreItem);
+        }
+        else{
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+    }
+    catch(NoSuchElementException e){
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    }    
     }
     
 }

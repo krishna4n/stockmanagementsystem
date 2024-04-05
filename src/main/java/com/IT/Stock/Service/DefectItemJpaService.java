@@ -31,6 +31,7 @@ public class DefectItemJpaService implements DefectItemRepository{
     @Override
     public DefectItemService addItemService(DefectItemService defectItemService) {
         try{
+            System.out.println("Defect item add requested");
             return defectItemJpaRepository.save(defectItemService);
         }
         catch(Exception e){

@@ -15,7 +15,6 @@ public interface StoreRepository {
     Store deleteStore(long storeId);
     ArrayList<Store> getWarrantyDetails();
     Store updateStoreItemOutward(Outward outward,long storeId);
-    Store updateStoreItemReplacement(String faultySerialNumber);
     ArrayList<Store> getStoresByCurrentStatusAndWorkingStatus(String currentStatus, String workingStatus);
-    
+    Store updateStoreItemDefectStatus(Outward outward);
 }

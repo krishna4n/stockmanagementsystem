@@ -32,7 +32,7 @@ public class Outward {
     private String grn;
     @Column(name = "newreplacement")
     private String newReplacement;
-    @Column(name = "faultyitemserialnumber")
+    @Column(name = "faultyserialnumber")
     private String faultySerialNumber;
     @Column(name = "outpass")
     private String outPass;
@@ -43,12 +43,14 @@ public class Outward {
     @ManyToOne
     @JoinColumn(name = "storeid")    
     private Store store;
+    @Column(name = "inwardid")
+    private String inwardId;
 
     public Outward() {
     }
     
     public Outward(long outwardId, String toCampus, String toCity, String toDepartment, String approvedBy,
-            String indent,Date outwardDate, String grn, String newReplacement,long quantity, String defectSerialNumber, String outPass, Store store)
+            String indent,Date outwardDate, String grn, String newReplacement,long quantity, String faultySerialNumber, String outPass, Store store, String inwardId)
             {
         this.outwardId = outwardId;
         this.toCampus = toCampus;
@@ -58,15 +60,14 @@ public class Outward {
         this.indent = indent;
         this.grn = grn;
         this.newReplacement = newReplacement;
-        this.faultySerialNumber = defectSerialNumber;
+        this.faultySerialNumber = faultySerialNumber;
         this.outPass = outPass;
         this.store = store;
         this.quantity = quantity;
         this.outwardDate = outwardDate;
+        this.inwardId = inwardId;
     }
-
-    
-
+  
     public long getOutwardId() {
         return outwardId;
     }
@@ -115,12 +116,6 @@ public class Outward {
     public void setNewReplacement(String newReplacement) {
         this.newReplacement = newReplacement;
     }
-    public String getFaultySerialNumber() {
-        return faultySerialNumber;
-    }
-    public void setFaultySerialNumber(String defectSerialNumber) {
-        this.faultySerialNumber = defectSerialNumber;
-    }
     public String getOutPass() {
         return outPass;
     }
@@ -149,6 +144,22 @@ public class Outward {
 
     public void setOutwardDate(Date outwardDate) {
         this.outwardDate = outwardDate;
+    }
+
+    public String getFaultySerialNumber() {
+        return faultySerialNumber;
+    }
+
+    public void setFaultySerialNumber(String faultySerialNumber) {
+        this.faultySerialNumber = faultySerialNumber;
+    }
+
+    public String getInwardId() {
+        return inwardId;
+    }
+
+    public void setInwardId(String inwardId) {
+        this.inwardId = inwardId;
     }
  
 }
