@@ -1,6 +1,7 @@
 package com.IT.Stock.Model;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -32,14 +33,11 @@ public class StockBalance {
  
 @PrePersist
     protected void updatedOn() {
-        updatedOn = LocalDateTime.now();
+        updatedOn = LocalDateTime.now(ZoneId.of("Asia/Kolkata"));
     }
     
     public StockBalance() {
     }
-
-    
-
 
     public StockBalance(long stockId, Item item, long quantity, String workingStatus) {
         this.stockId = stockId;

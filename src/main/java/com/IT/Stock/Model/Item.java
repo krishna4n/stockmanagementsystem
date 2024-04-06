@@ -1,6 +1,7 @@
 package com.IT.Stock.Model;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 import jakarta.persistence.*;
 
@@ -24,6 +25,13 @@ public class Item {
     private String itemModel;
     @Column(name = "itemcapacity", nullable = false)
     private String itemCapacity;    
+     @Column(name = "createdon", nullable = false, updatable = false)
+private LocalDateTime createdOn;
+    
+@PrePersist
+    protected void onCreate() {
+        createdOn = LocalDateTime.now(ZoneId.of("Asia/Kolkata"));
+    }
 
     public Item() {
     }
@@ -72,6 +80,9 @@ public class Item {
     public void setItemType(String itemType) {
         this.itemType = itemType;
     }
-    
+
+    public LocalDateTime getCreatedOn() {
+        return createdOn;
+    }
     
 }

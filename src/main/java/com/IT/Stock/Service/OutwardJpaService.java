@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.IT.Stock.Model.*;
+import com.IT.Stock.Repository.InwardJpaRepository;
 import com.IT.Stock.Repository.OutwardJpaRepository;
 import com.IT.Stock.Repository.OutwardRepository;
 import com.IT.Stock.Repository.StockBalanceJpaRepository;
@@ -31,6 +32,9 @@ public class OutwardJpaService implements OutwardRepository{
     @Autowired
     private DefectItemJpaService defectItemJpaService;
 
+    @Autowired
+    private InwardJpaRepository inwardJpaRepository;
+
     @Override
     public ArrayList<Outward> getAllOutwards() {
     try{
@@ -47,12 +51,14 @@ public class OutwardJpaService implements OutwardRepository{
     try{
         if(outward.getNewReplacement().equals("REPLACEMENT")){
         Store updatedDefectStock = storeJpaService.updateStoreItemDefectStatus(outward);
+        Long lastInwardId =  inwardJpaRepository.findMaxInwardIdByStoreId(outward.getStore().getStoreId());
+        outward.setInwardId(lastInwardId);
         if(updatedDefectStock == null){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
         }
        
-        long outwardQty = outward.getQuantity();
+        long outwardQty = outward.getStore().getItem().getItemType().equals("ASSET") ? 1 : outward.getQuantity();
         Store existingStoreItem = outward.getStore();
         Store isStoreUpdated = storeJpaService.updateStoreItemOutward(outward,existingStoreItem.getStoreId());
        
@@ -62,7 +68,7 @@ public class OutwardJpaService implements OutwardRepository{
            if(newOutward != null){
             StockBalance existingStockBalance = stockBalancerRepository.findByItemAndWorkingStatus(outward.getStore().getItem(), outward.getStore().getWorkingStatus());
             if(existingStockBalance != null){
-                long outwardQuantity = outward.getStore().getItem().getItemType().equals("ASSET") ? 1 : outward.getQuantity();
+                long outwardQuantity = outward.getStore().getItem().getItemType().equals("ASSET") ? 1 : 1;
                 long quantity = outward.getStore().getItem().getItemType().equals("EXPENSE") ? (existingStockBalance.getQuantity() - outwardQuantity) : existingStockBalance.getQuantity();
                 System.out.println(existingStockBalance.getQuantity());
                 System.out.println(outward.getQuantity());

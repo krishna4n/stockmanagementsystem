@@ -93,6 +93,7 @@ public class InwardJpaService implements InwardRepository{
     @SuppressWarnings("null")
     @Override
     public ArrayList<Inward> addInwardStoreAndBalance(Store store) {
+        
         try{
             Inward newInward = new Inward();  
             
@@ -114,6 +115,8 @@ public class InwardJpaService implements InwardRepository{
             newInward.setQuantity(store.getQuantity());
             
             if(existingStoreItem != null){
+                // This condition is for checking duplicate and base 
+                //on ASSET and EXPENSE validation quantity will be updated.
                 if(existingStoreItem.getCurrentStatus().equals("IN") & !store.getSerialNumber().equals("") & store.getItem().getItemType().equals("ASSET")){
                     System.out.println("duplicate record");
                     throw new ResponseStatusException(HttpStatus.FOUND, "This stock item is already in Store");
@@ -128,8 +131,12 @@ public class InwardJpaService implements InwardRepository{
             }
             else{
               
-                existingStoreItem = storeJpaService.addStore(store);      
-                newInward.setStore(existingStoreItem);    
+                existingStoreItem = storeJpaService.addStore(store);  
+                if(existingStoreItem == null){
+                    throw new ResponseStatusException(HttpStatus.NOT_FOUND,"invalid store details");
+                }      
+                newInward.setStore(existingStoreItem); 
+                
             }
 
             StockBalance existingStockBalance = stockBalanceJpaRepository.findByItemAndWorkingStatus(store.getItem(),store.getWorkingStatus());

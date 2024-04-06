@@ -1,5 +1,7 @@
 package com.IT.Stock.Model;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 
 import jakarta.persistence.Column;
@@ -9,6 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 
 @Entity
@@ -44,13 +47,20 @@ public class Outward {
     @JoinColumn(name = "storeid")    
     private Store store;
     @Column(name = "inwardid")
-    private String inwardId;
+    private long inwardId;
+    @Column(name = "createdon", nullable = false, updatable = false)
+private LocalDateTime createdOn;
+    
+@PrePersist
+    protected void onCreate() {
+        createdOn = LocalDateTime.now(ZoneId.of("Asia/Kolkata"));
+    }
 
     public Outward() {
     }
     
     public Outward(long outwardId, String toCampus, String toCity, String toDepartment, String approvedBy,
-            String indent,Date outwardDate, String grn, String newReplacement,long quantity, String faultySerialNumber, String outPass, Store store, String inwardId)
+            String indent,Date outwardDate, String grn, String newReplacement,long quantity, String faultySerialNumber, String outPass, Store store, long inwardId)
             {
         this.outwardId = outwardId;
         this.toCampus = toCampus;
@@ -154,12 +164,16 @@ public class Outward {
         this.faultySerialNumber = faultySerialNumber;
     }
 
-    public String getInwardId() {
+    public long getInwardId() {
         return inwardId;
     }
 
-    public void setInwardId(String inwardId) {
+    public void setInwardId(long inwardId) {
         this.inwardId = inwardId;
+    }
+
+    public LocalDateTime getCreatedOn() {
+        return createdOn;
     }
  
 }

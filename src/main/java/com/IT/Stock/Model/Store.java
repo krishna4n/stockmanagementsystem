@@ -1,6 +1,7 @@
 package com.IT.Stock.Model;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 import jakarta.persistence.*;
 import java.util.Date;
@@ -56,7 +57,7 @@ public class Store {
 
     @PrePersist
     protected void onCreate() {
-        createdOn = LocalDateTime.now();
+        createdOn = LocalDateTime.now(ZoneId.of("Asia/Kolkata"));
     }
 
 
