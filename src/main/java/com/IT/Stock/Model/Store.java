@@ -42,8 +42,8 @@ public class Store {
     private String vendorContact;
     @Column(name = "warrantyenddate")
     private String warrantyEndDate;
-    @Column(name = "warrantytype")
-    private String warrantyType;
+    @Column(name = "warrantycovered")
+    private String warrantyCovered;
     @Column(name = "currentstatus")
     private String currentStatus;
     @Column(name = "workingstatus")
@@ -66,7 +66,7 @@ public class Store {
 
     public Store(long storeId, Item item, String source, String campusName, String cityName, String department,
             String poNumber, String invoiceNumber, String invoiceDate, String serialNumber, int quantity,
-            String vendorName, String vendorAddress, String vendorContact, String warrantyEndDate, String warrantyType,
+            String vendorName, String vendorAddress, String vendorContact, String warrantyEndDate, String warrantyCovered,
             String currentStatus, String workingStatus, Date inwardDate, String currentLocation,
             LocalDateTime createdOn) {
         this.storeId = storeId;
@@ -84,7 +84,7 @@ public class Store {
         this.vendorAddress = vendorAddress;
         this.vendorContact = vendorContact;
         this.warrantyEndDate = warrantyEndDate;
-        this.warrantyType = warrantyType;
+        this.warrantyCovered = warrantyCovered;
         this.currentStatus = currentStatus;
         this.workingStatus = workingStatus;
         this.inwardDate = inwardDate;
@@ -206,11 +206,11 @@ public class Store {
     public void setWarrantyEndDate(String warrantyEndDate) {
         this.warrantyEndDate = warrantyEndDate;
     }
-    public String getWarrantyType() {
-        return warrantyType;
+    public String getWarrantyCovered() {
+        return warrantyCovered;
     }
-    public void setWarrantyType(String warrantyType) {
-        this.warrantyType = warrantyType;
+    public void setWarrantyCovered(String warrantyCovered) {
+        this.warrantyCovered = warrantyCovered;
     }
     public String getCurrentStatus() {
         return currentStatus;

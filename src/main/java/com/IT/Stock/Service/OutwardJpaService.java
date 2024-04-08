@@ -49,17 +49,25 @@ public class OutwardJpaService implements OutwardRepository{
     public ArrayList<Outward> addStockOutwardAndBalance(Outward outward) {
        
     try{
-        if(outward.getNewReplacement().equals("REPLACEMENT")){
+       
         Store updatedDefectStock = storeJpaService.updateStoreItemDefectStatus(outward);
         Long lastInwardId =  inwardJpaRepository.findMaxInwardIdByStoreId(outward.getStore().getStoreId());
         outward.setInwardId(lastInwardId);
+        
         if(updatedDefectStock == null){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"store details are invalid");
         }
+        if(lastInwardId.equals(0)){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"inwardid is invalid");
         }
-       
-        long outwardQty = outward.getStore().getItem().getItemType().equals("ASSET") ? 1 : outward.getQuantity();
         Store existingStoreItem = outward.getStore();
+
+        if(outward.getNewReplacement().equals("REPLACEMENT") && existingStoreItem == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"replacement details are wrong");
+        }
+        
+        long outwardQty = outward.getStore().getItem().getItemType().equals("ASSET") ? 1 : outward.getQuantity();
+        
         Store isStoreUpdated = storeJpaService.updateStoreItemOutward(outward,existingStoreItem.getStoreId());
        
         if(isStoreUpdated != null){
