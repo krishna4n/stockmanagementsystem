@@ -39,4 +39,14 @@ public class DefectItemJpaService implements DefectItemRepository{
         }    
     }
     
+    @Override
+    public DefectItemService getDefectItemById(long serviceId){
+        try{
+            return defectItemJpaRepository.findById(serviceId).get();
+        }
+        catch(Exception e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "invalid serviceid");
+        }
+    }
+
 }

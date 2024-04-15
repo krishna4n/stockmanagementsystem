@@ -7,4 +7,5 @@ import com.IT.Stock.Model.DefectItemService;
 public interface DefectItemRepository {
     ArrayList<DefectItemService> getAllDefectItems();
     DefectItemService addItemService(DefectItemService defectItemService);
+    DefectItemService getDefectItemById(long serviceId);
 }

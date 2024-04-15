@@ -1,6 +1,8 @@
 {
   "dependencies": {
     "http-proxy-middleware": "^2.0.6",
-    "react-datepicker": "^6.3.0"
+    "react-autosuggest": "^10.1.0",
+    "react-datepicker": "^6.3.0",
+    "react-modal": "^3.16.1"
   }
 }

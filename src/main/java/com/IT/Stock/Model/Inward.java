@@ -34,6 +34,8 @@ public class Inward {
     private String department;
     @Column(name = "quantity")
     private long quantity;
+    @Column(name = "workingstatus")
+    private String workingStatus;
     @ManyToOne
     @JoinColumn(name = "itemid")
     private Item item;    
@@ -50,7 +52,7 @@ private LocalDateTime createdOn;
     }
 
     
-    public Inward(long inwardId, Store store, String cityName, String campusName, String department, Item item,Date inwardDate, int quantity) {
+    public Inward(long inwardId, Store store, String cityName, String campusName, String department, Item item,Date inwardDate, int quantity, String workingStatus) {
         this.inwardId = inwardId;
         this.store = store;
         this.cityName = cityName;
@@ -59,27 +61,7 @@ private LocalDateTime createdOn;
         this.item = item;
         this.inwardDate = inwardDate;
         this.quantity = quantity;
-    }
-
-    
-
-    public long getQuantity() {
-        return quantity;
-    }
-
-
-    public void setQuantity(long quantity) {
-        this.quantity = quantity;
-    }
-
-
-    public Date getInwardDate() {
-        return inwardDate;
-    }
-
-
-    public void setInwardDate(Date inwardDate) {
-        this.inwardDate = inwardDate;
+        this.workingStatus = workingStatus;
     }
 
 
@@ -100,6 +82,16 @@ private LocalDateTime createdOn;
 
     public void setStore(Store store) {
         this.store = store;
+    }
+
+
+    public Date getInwardDate() {
+        return inwardDate;
+    }
+
+
+    public void setInwardDate(Date inwardDate) {
+        this.inwardDate = inwardDate;
     }
 
 
@@ -133,6 +125,26 @@ private LocalDateTime createdOn;
     }
 
 
+    public long getQuantity() {
+        return quantity;
+    }
+
+
+    public void setQuantity(long quantity) {
+        this.quantity = quantity;
+    }
+
+
+    public String getWorkingStatus() {
+        return workingStatus;
+    }
+
+
+    public void setWorkingStatus(String workingStatus) {
+        this.workingStatus = workingStatus;
+    }
+
+
     public Item getItem() {
         return item;
     }
@@ -146,5 +158,6 @@ private LocalDateTime createdOn;
     public LocalDateTime getCreatedOn() {
         return createdOn;
     }
+
  
 }

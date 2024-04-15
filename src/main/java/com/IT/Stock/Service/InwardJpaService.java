@@ -8,7 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.IT.Stock.Model.DefectItemService;
 import com.IT.Stock.Model.Inward;
+import com.IT.Stock.Model.Scrap;
 import com.IT.Stock.Model.StockBalance;
 import com.IT.Stock.Model.Store;
 import com.IT.Stock.Repository.InwardJpaRepository;
@@ -32,6 +34,12 @@ public class InwardJpaService implements InwardRepository{
 
     @Autowired
     private StockBalanceJpaRepository stockBalanceJpaRepository;
+
+    @Autowired
+    private DefectItemJpaService defectItemJpaService;
+
+    @Autowired
+    private ScrapJpaService scrapJpaService;
 
 
     @Override
@@ -113,6 +121,7 @@ public class InwardJpaService implements InwardRepository{
             newInward.setItem(store.getItem());
             newInward.setInwardDate(store.getInwardDate());
             newInward.setQuantity(store.getQuantity());
+            newInward.setWorkingStatus(store.getWorkingStatus());
             
             if(existingStoreItem != null){
                 // This condition is for checking duplicate and base 
@@ -121,7 +130,7 @@ public class InwardJpaService implements InwardRepository{
                     System.out.println("duplicate record");
                     throw new ResponseStatusException(HttpStatus.FOUND, "This stock item is already in Store");
                 } 
-                else if(store.getItem().getItemType().equals("EXPENSE")){
+                else {
                  
                    newInward.setStore(existingStoreItem);
                 }  
@@ -150,7 +159,7 @@ public class InwardJpaService implements InwardRepository{
              
             }
 
-            else{
+            else if((store.getItem().getItemType().equals("EXPENSE") && store.getWorkingStatus().equals("WORKING")) || (store.getItem().getItemType().equals("ASSET"))){
                 
                 StockBalance newStockBalance = new StockBalance();
                 newStockBalance.setItem(store.getItem());
@@ -158,7 +167,32 @@ public class InwardJpaService implements InwardRepository{
                 newStockBalance.setWorkingStatus(store.getWorkingStatus());
                 
                 stockBalanceService.addStockBalance(newStockBalance);
-            }         
+            }    
+            
+             if(store.getWorkingStatus().equals("NOT_WORKING") && store.getItem().getItemType().equals("ASSET")){
+                long inwardQuantity = inward.getItem().getItemType().equals("ASSET") ? 1 : inward.getQuantity();
+                      
+                         DefectItemService defectItemService = new DefectItemService();
+                        Store defectiveStock = storeJpaService.getStoreBySerialNumber(store.getSerialNumber());
+                        defectItemService.setQuantity(inwardQuantity); 
+                        defectItemService.setReceivedFrom(store.getCampusName());
+                        defectItemService.setWorkingStatus("NOT_WORKING");
+                        defectItemService.setStore(defectiveStock);
+                        defectItemJpaService.addItemService(defectItemService);
+                    
+                }
+            else if(store.getWorkingStatus().equals("NOT_WORKING") && store.getItem().getItemType().equals("EXPENSE")){
+                //SCRAP ENTRY HERE
+                Scrap newScrap = new Scrap();
+                long scrapQuantity = store.getItem().getItemType().equals("ASSET") ? 1 : store.getQuantity();
+                newScrap.setStore(existingStoreItem);
+                newScrap.setReceivedDate(store.getInwardDate());
+                newScrap.setReceivedFrom(store.getCampusName());
+                existingStoreItem.setWorkingStatus("SCRAP");
+                newScrap.setQuantity(scrapQuantity);
+                storeJpaService.addStore(existingStoreItem);
+                scrapJpaService.addScrap(newScrap);
+            }    
         
         }
 

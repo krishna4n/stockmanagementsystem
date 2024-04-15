@@ -47,17 +47,30 @@ public class OutwardJpaService implements OutwardRepository{
 
     @Override
     public ArrayList<Outward> addStockOutwardAndBalance(Outward outward) {
-       
+        System.out.println("===================================================");
+        System.out.println("In outward class addstockoutward initiated");
+        System.out.println("===================================================");
     try{
        
-        Store updatedDefectStock = storeJpaService.updateStoreItemDefectStatus(outward);
-        Long lastInwardId =  inwardJpaRepository.findMaxInwardIdByStoreId(outward.getStore().getStoreId());
-        outward.setInwardId(lastInwardId);
         
+        Long lastInwardId =  inwardJpaRepository.findMaxInwardIdByStoreId(outward.getStore().getStoreId());
+        System.out.println("==========last oinwardid is=========================================");
+        System.out.println(lastInwardId);
+        System.out.println("===================================================");
+        outward.setInwardId(lastInwardId);
+        if(outward.getNewReplacement().equals("REPLACEMENT")){
+        Store updatedDefectStock = storeJpaService.updateStoreItemDefectStatus(outward);
         if(updatedDefectStock == null){
+            System.out.println("===================================================");
+            System.out.println("In outward updateddefectstock is null");
+            System.out.println("===================================================");
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"store details are invalid");
         }
+    }
         if(lastInwardId.equals(0)){
+            System.out.println("===================================================");
+            System.out.println("In outward lastinwardid is 0");
+            System.out.println("===================================================");
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"inwardid is invalid");
         }
         Store existingStoreItem = outward.getStore();
@@ -76,35 +89,21 @@ public class OutwardJpaService implements OutwardRepository{
            if(newOutward != null){
             StockBalance existingStockBalance = stockBalancerRepository.findByItemAndWorkingStatus(outward.getStore().getItem(), outward.getStore().getWorkingStatus());
             if(existingStockBalance != null){
-                long outwardQuantity = outward.getStore().getItem().getItemType().equals("ASSET") ? 1 : 1;
-                long quantity = outward.getStore().getItem().getItemType().equals("EXPENSE") ? (existingStockBalance.getQuantity() - outwardQuantity) : existingStockBalance.getQuantity();
+                long outwardQuantity = outward.getStore().getItem().getItemType().equals("ASSET") ? 1 : outward.getQuantity();
+                long updatedQuantity = outward.getStore().getItem().getItemType().equals("EXPENSE") ? (existingStockBalance.getQuantity() - outwardQuantity) : existingStockBalance.getQuantity() - outwardQuantity;
                 System.out.println(existingStockBalance.getQuantity());
                 System.out.println(outward.getQuantity());
-                existingStockBalance.setQuantity(quantity);
-                isStoreUpdated.setQuantity(quantity);
+                existingStockBalance.setQuantity(updatedQuantity);
+                isStoreUpdated.setQuantity(updatedQuantity);
                 storeJpaService.addStore(isStoreUpdated);
-                stockBalanceService.addStockBalance(existingStockBalance);
-               
-                if(outward.getNewReplacement().equals("REPLACEMENT")){
-                      
-                         DefectItemService defectItemService = new DefectItemService();
-                        Store defectiveStock = storeJpaService.getStoreBySerialNumber(outward.getFaultySerialNumber());
-                        defectItemService.setQuantity(outwardQuantity); 
-                        defectItemService.setReceivedFrom(outward.getToCampus());
-                        defectItemService.setWorkingStatus("NOT_WORKING");
-                        defectItemService.setStore(defectiveStock);
-                        defectItemJpaService.addItemService(defectItemService);
-                        
-                    
-                }
-               
+                stockBalanceService.addStockBalance(existingStockBalance);               
             }
             }
         }
         return (ArrayList<Outward>)outwardJpaRepository.findTop10Outward();
     }
     catch(NoSuchElementException e){
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
     }    
     }
 

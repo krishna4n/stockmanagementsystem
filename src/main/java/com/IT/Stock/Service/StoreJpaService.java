@@ -72,9 +72,11 @@ public class StoreJpaService implements StoreRepository{
        try{
         long quantity = existingStoreItem.getQuantity() + store.getQuantity();
         existingStoreItem.setWorkingStatus(store.getWorkingStatus());
+        if(store.getItem().getItemType() != "EXPENSE"){
         existingStoreItem.setQuantity(quantity);
         existingStoreItem.setCurrentLocation(store.getCurrentLocation());
         existingStoreItem.setCurrentStatus(store.getCurrentStatus());
+        }
         return storeJpaRepository.save(existingStoreItem);
        }
        catch(Exception e){
