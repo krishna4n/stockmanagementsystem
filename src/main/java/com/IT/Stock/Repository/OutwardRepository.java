@@ -10,4 +10,5 @@ public interface OutwardRepository {
     Outward getOutwardById(long outwardId);
     Outward updateOutward(Outward outward, long outwardId);
     void deleteOutward(long outwardId);
+    ArrayList<Outward> getLast5Transactions();
 }

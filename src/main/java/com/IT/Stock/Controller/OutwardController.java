@@ -25,5 +25,10 @@ public class OutwardController {
     public ArrayList<Outward> addStockOutwardAndBalance(@RequestBody Outward outward){
         return outwardJpaService.addStockOutwardAndBalance(outward);
     }
+
+    @GetMapping("stores/outward/recent")
+    public ArrayList<Outward> getLast5Transactions(){
+        return outwardJpaService.getLast5Transactions();
+    }
     
 }

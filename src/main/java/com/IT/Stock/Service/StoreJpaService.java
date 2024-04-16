@@ -72,10 +72,13 @@ public class StoreJpaService implements StoreRepository{
        try{
         long quantity = existingStoreItem.getQuantity() + store.getQuantity();
         existingStoreItem.setWorkingStatus(store.getWorkingStatus());
-        if(store.getItem().getItemType() != "EXPENSE"){
+        
         existingStoreItem.setQuantity(quantity);
         existingStoreItem.setCurrentLocation(store.getCurrentLocation());
         existingStoreItem.setCurrentStatus(store.getCurrentStatus());
+        if(store.getItem().getItemType().equals("EXPENSE")){
+           existingStoreItem.setCurrentLocation("STORE");
+            existingStoreItem.setCurrentStatus("IN");
         }
         return storeJpaRepository.save(existingStoreItem);
        }
@@ -88,8 +91,17 @@ public class StoreJpaService implements StoreRepository{
     public Store updateStoreItemOutward(Outward outward, long storeId) {
         try{
             Store existingStoreItem = storeJpaRepository.findById(storeId).get();
+            
+            if(outward.getStore().getItem().getItemType().equals("ASSET")){
+                   
             existingStoreItem.setCurrentStatus("OUT");
             existingStoreItem.setCurrentLocation(outward.getToCampus());
+            }
+            else if(outward.getStore().getItem().getItemType().equals("EXPENSE")){
+                long balanceQty = existingStoreItem.getQuantity() - outward.getQuantity(); 
+                existingStoreItem.setCurrentStatus("IN");
+                existingStoreItem.setQuantity(balanceQty);
+            }
             return storeJpaRepository.save(existingStoreItem);
         }
         catch(Exception e){

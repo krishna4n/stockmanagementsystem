@@ -30,9 +30,6 @@ public class OutwardJpaService implements OutwardRepository{
     private StockBalanceService stockBalanceService;
 
     @Autowired
-    private DefectItemJpaService defectItemJpaService;
-
-    @Autowired
     private InwardJpaRepository inwardJpaRepository;
 
     @Override
@@ -123,6 +120,16 @@ public class OutwardJpaService implements OutwardRepository{
     public void deleteOutward(long outwardId) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'deleteOutward'");
+    }
+
+    @Override
+    public ArrayList<Outward> getLast5Transactions() {
+       try{
+        return (ArrayList<Outward>)outwardJpaRepository.findTop10Outward();
+       }
+       catch(Exception e){
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+       }
     }
     
 }
