@@ -35,9 +35,8 @@ private LocalDateTime createdOn;
 
     public Item() {
     }
-    public Item(long itemId, String itemName, String itemBrand, String itemModel, String itemCapacity,
-            String itemSource, String itemSerialNumber, String itemType, LocalDateTime createdAt) {
-        this.itemId = itemId;
+    public Item( String itemName, String itemBrand, String itemModel, String itemCapacity,String itemType) {
+        
         this.itemName = itemName;
         this.itemBrand = itemBrand;
         this.itemModel = itemModel;
